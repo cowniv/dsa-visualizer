@@ -20,3 +20,24 @@
   <section id="sorting" class="view active">
     <div class="controls">
       <select id="algo">
+        <option value="bubble">Bubble sort</option>
+        <option value="selection">Selection sort</option>
+        <option value="insertion">Insertion sort</option>
+        <option value="merge">Merge sort</option>
+        <option value="quick">Quick sort</option>
+      </select>
+      <label>Size <input type="range" id="size" min="5" max="60" value="25"></label>
+      <label>Speed <input type="range" id="speed" min="1" max="100" value="60"></label>
+      <button id="shuffle">Shuffle</button>
+      <button id="play" class="primary">Play</button>
+      <button id="step">Step</button>
+    </div>
+    <div id="bars" class="bars"></div>
+    <div class="stats">
+      <span>Steps <b id="stat-steps">0</b></span>
+      <span>Comparisons <b id="stat-cmp">0</b></span>
+      <span>Swaps / writes <b id="stat-swp">0</b></span>
+      <span id="complexity" class="muted"></span>
+    </div>
+    <p id="sort-msg" class="msg"></p>
+  </section>
