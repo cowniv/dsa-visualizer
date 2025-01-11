@@ -5,3 +5,9 @@ export function* binarySearch(arr, target) {
   while (low <= high) {
     const mid = Math.floor((low + high) / 2);
     yield { low, high, mid, found: arr[mid] === target };
+    if (arr[mid] === target) return mid;
+    if (arr[mid] < target) low = mid + 1;
+    else high = mid - 1;
+  }
+  return -1;
+}
