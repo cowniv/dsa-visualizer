@@ -18,3 +18,9 @@ export function sortedRandomArray(size = 16, max = 99) {
   }
   if (size > max) {
     throw new RangeError("Size cannot exceed the available number range.");
+  }
+
+  const set = new Set();
+  while (set.size < size) set.add(Math.floor(Math.random() * max) + 1);
+  return [...set].sort((a, b) => a - b);
+}
