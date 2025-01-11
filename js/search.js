@@ -11,3 +11,10 @@ export function* binarySearch(arr, target) {
   }
   return -1;
 }
+
+export function sortedRandomArray(size = 16, max = 99) {
+  if (!Number.isInteger(size) || !Number.isInteger(max) || size < 1 || max < 1) {
+    throw new RangeError("Size and maximum must be positive integers.");
+  }
+  if (size > max) {
+    throw new RangeError("Size cannot exceed the available number range.");
