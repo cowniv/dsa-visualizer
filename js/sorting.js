@@ -51,3 +51,29 @@ export function* insertionSort(arr) {
       j--;
     }
   }
+}
+
+export function* mergeSort(arr, lo = 0, hi = arr.length - 1) {
+  if (lo >= hi) return;
+  const mid = Math.floor((lo + hi) / 2);
+  yield* mergeSort(arr, lo, mid);
+  yield* mergeSort(arr, mid + 1, hi);
+
+  const left = arr.slice(lo, mid + 1);
+  const right = arr.slice(mid + 1, hi + 1);
+  let a = 0, b = 0, k = lo;
+  while (a < left.length && b < right.length) {
+    yield { type: "compare", i: lo + a, j: mid + 1 + b };
+    arr[k] = left[a] <= right[b] ? left[a++] : right[b++];
+    yield { type: "write", i: k, value: arr[k] };
+    k++;
+  }
+  while (a < left.length) { arr[k] = left[a++]; yield { type: "write", i: k, value: arr[k] }; k++; }
+  while (b < right.length) { arr[k] = right[b++]; yield { type: "write", i: k, value: arr[k] }; k++; }
+}
+
+export function* quickSort(arr, lo = 0, hi = arr.length - 1) {
+  if (lo > hi) return;
+  if (lo === hi) { yield { type: "done", i: lo }; return; }
+
+  // Lomuto partition: last element is the pivot
