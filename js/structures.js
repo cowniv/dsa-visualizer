@@ -9,3 +9,13 @@ export class Stack {
     if (this.isFull()) throw new Error("Stack overflow — the stack is full.");
     this.items.push(value);
   }
+  pop() {
+    if (this.isEmpty()) throw new Error("Stack underflow — nothing to pop.");
+    return this.items.pop();
+  }
+  peek() {
+    if (this.isEmpty()) throw new Error("The stack is empty.");
+    return this.items[this.items.length - 1];
+  }
+  isEmpty() { return this.items.length === 0; }
+  isFull() { return this.items.length >= this.limit; }
