@@ -77,3 +77,29 @@ export function* quickSort(arr, lo = 0, hi = arr.length - 1) {
   if (lo === hi) { yield { type: "done", i: lo }; return; }
 
   // Lomuto partition: last element is the pivot
+  const pivot = arr[hi];
+  yield { type: "pivot", i: hi };
+  let p = lo;
+  for (let j = lo; j < hi; j++) {
+    yield { type: "compare", i: j, j: hi };
+    if (arr[j] < pivot) {
+      [arr[p], arr[j]] = [arr[j], arr[p]];
+      if (p !== j) yield { type: "swap", i: p, j };
+      p++;
+    }
+  }
+  [arr[p], arr[hi]] = [arr[hi], arr[p]];
+  yield { type: "swap", i: p, j: hi };
+  yield { type: "done", i: p };
+
+  yield* quickSort(arr, lo, p - 1);
+  yield* quickSort(arr, p + 1, hi);
+}
+
+export const ALGORITHMS = {
+  bubble: { fn: bubbleSort, complexity: "O(n²) time · O(1) space · stable" },
+  selection: { fn: selectionSort, complexity: "O(n²) time · O(1) space · not stable" },
+  insertion: { fn: insertionSort, complexity: "O(n²) worst, O(n) best · O(1) space · stable" },
+  merge: { fn: mergeSort, complexity: "O(n log n) time · O(n) space · stable" },
+  quick: { fn: quickSort, complexity: "O(n log n) avg, O(n²) worst · O(log n) space" },
+};
