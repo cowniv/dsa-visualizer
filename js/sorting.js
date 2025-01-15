@@ -25,3 +25,29 @@ export function* bubbleSort(arr) {
 }
 
 export function* selectionSort(arr) {
+  const n = arr.length;
+  for (let i = 0; i < n - 1; i++) {
+    let min = i;
+    for (let j = i + 1; j < n; j++) {
+      yield { type: "compare", i: min, j };
+      if (arr[j] < arr[min]) min = j;
+    }
+    if (min !== i) {
+      [arr[i], arr[min]] = [arr[min], arr[i]];
+      yield { type: "swap", i, j: min };
+    }
+    yield { type: "done", i };
+  }
+}
+
+export function* insertionSort(arr) {
+  for (let i = 1; i < arr.length; i++) {
+    let j = i;
+    while (j > 0) {
+      yield { type: "compare", i: j - 1, j };
+      if (arr[j - 1] <= arr[j]) break;
+      [arr[j - 1], arr[j]] = [arr[j], arr[j - 1]];
+      yield { type: "swap", i: j - 1, j };
+      j--;
+    }
+  }
