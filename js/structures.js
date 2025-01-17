@@ -30,3 +30,13 @@ export class Queue {
     if (this.items.length >= this.limit) throw new Error("Queue is full.");
     this.items.push(value);
   }
+  dequeue() {
+    if (this.isEmpty()) throw new Error("Queue is empty — nothing to dequeue.");
+    return this.items.shift();
+  }
+  front() {
+    if (this.isEmpty()) throw new Error("Queue is empty.");
+    return this.items[0];
+  }
+  isEmpty() { return this.items.length === 0; }
+}
