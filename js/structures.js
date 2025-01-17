@@ -19,3 +19,14 @@ export class Stack {
   }
   isEmpty() { return this.items.length === 0; }
   isFull() { return this.items.length >= this.limit; }
+}
+
+export class Queue {
+  constructor(limit = 10) {
+    this.items = [];
+    this.limit = limit;
+  }
+  enqueue(value) {
+    if (this.items.length >= this.limit) throw new Error("Queue is full.");
+    this.items.push(value);
+  }
