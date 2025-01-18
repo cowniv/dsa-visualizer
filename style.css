@@ -80,3 +80,44 @@ button.primary { background: var(--bar); color: var(--bg); border-color: var(--b
   border-radius: 3px 3px 0 0;
   position: relative;
   transition: height .08s;
+}
+.bar span {
+  position: absolute;
+  top: -16px;
+  width: 100%;
+  text-align: center;
+  font-size: .65rem;
+  color: var(--muted);
+}
+.bar.compare { background: var(--compare); }
+.bar.swap { background: var(--swap); }
+.bar.pivot { background: var(--pivot); }
+.bar.done { background: var(--done); }
+
+.stats { display: flex; flex-wrap: wrap; gap: 24px; margin-top: 14px; font-size: .9rem; }
+.stats b { color: var(--bar); margin-left: 4px; }
+.muted { color: var(--muted); }
+.msg { margin-top: 10px; color: var(--muted); min-height: 1.4em; }
+
+/* stack & queue */
+.ds-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.ds-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px; }
+.ds-card h2 { font-size: 1.1rem; margin-bottom: 12px; }
+.ds-card small { color: var(--muted); font-weight: normal; }
+
+.item {
+  border: 1px solid var(--bar);
+  border-radius: 6px;
+  padding: 10px;
+  text-align: center;
+  animation: pop-in .25s ease;
+}
+.item.highlight { background: var(--compare); color: var(--bg); border-color: var(--compare); }
+.item.leaving { animation: pop-out .25s ease forwards; }
+
+.stack {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 6px;
+  min-height: 300px;
+  border: 2px solid var(--line);
