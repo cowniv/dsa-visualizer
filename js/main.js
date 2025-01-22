@@ -70,3 +70,75 @@ function drawBars(step = null) {
 function drawStats() {
   $("stat-steps").textContent = sort.stats.steps;
   $("stat-cmp").textContent = sort.stats.cmp;
+  $("stat-swp").textContent = sort.stats.swp;
+}
+
+function setSortControls(running) {
+  // can't change the array or algorithm in the middle of a run
+  $("algo").disabled = running;
+  $("size").disabled = running;
+  $("shuffle").disabled = running;
+}
+
+// Runs one step of the generator. Returns false when the sort is over.
+function nextStep() {
+  if (!sort.gen) {
+    sort.gen = ALGORITHMS[$("algo").value].fn(sort.array);
+    setSortControls(true);
+  }
+  const { value: step, done } = sort.gen.next();
+  if (done) {
+    sort.finished = true;
+    sort.playing = false;
+    $("play").textContent = "Play";
+    $("play").disabled = true;
+    $("step").disabled = true;
+    setSortControls(false);
+    $("sort-msg").textContent = `Sorted in ${sort.stats.steps} steps.`;
+    drawBars();
+    return false;
+  }
+
+  sort.stats.steps++;
+  if (step.type === "compare") sort.stats.cmp++;
+  if (step.type === "swap" || step.type === "write") sort.stats.swp++;
+  if (step.type === "done") sort.doneSet.add(step.i);
+  drawBars(step);
+  drawStats();
+  return true;
+}
+
+async function play() {
+  sort.playing = true;
+  $("play").textContent = "Pause";
+  while (sort.playing && nextStep()) {
+    await sleep(delay());
+  }
+}
+
+$("play").addEventListener("click", () => {
+  if (sort.playing) {
+    sort.playing = false;
+    $("play").textContent = "Play";
+  } else {
+    play();
+  }
+});
+
+$("step").addEventListener("click", () => {
+  sort.playing = false;
+  $("play").textContent = "Play";
+  nextStep();
+});
+
+$("shuffle").addEventListener("click", () => {
+  $("play").disabled = false;
+  $("step").disabled = false;
+  newArray();
+});
+$("size").addEventListener("input", () => $("shuffle").click());
+$("algo").addEventListener("change", () => $("shuffle").click());
+
+newArray();
+
+// ================= stack & queue =================
