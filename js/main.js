@@ -214,3 +214,75 @@ $("enqueue").addEventListener("click", () => {
 
 $("dequeue").addEventListener("click", async () => {
   if (queue.isEmpty()) return attempt($("queue-msg"), () => queue.dequeue());
+  await removeWithAnimation($("queue"), 0);
+  const v = queue.dequeue();
+  drawItems($("queue"), queue.items);
+  $("queue-msg").textContent = `dequeue() returned ${v}`;
+});
+
+$("front").addEventListener("click", () => {
+  attempt($("queue-msg"), () => {
+    const v = queue.front();
+    drawItems($("queue"), queue.items, 0);
+    return `front() → ${v}`;
+  });
+});
+
+$("stack-input").addEventListener("keydown", (e) => e.key === "Enter" && $("push").click());
+$("queue-input").addEventListener("keydown", (e) => e.key === "Enter" && $("enqueue").click());
+
+// ================= binary search =================
+let searchArray = [];
+let searching = false;
+
+function drawCells(state = null, foundIndex = -1) {
+  $("cells").innerHTML = searchArray
+    .map((v, i) => {
+      let cls = "cell";
+      if (state && (i < state.low || i > state.high)) cls += " out";
+      if (state && i === state.mid) cls += " mid";
+      if (i === foundIndex) cls += " found";
+      return `<div class="${cls}">${v}<small>[${i}]</small></div>`;
+    })
+    .join("");
+}
+
+function newSearchArray() {
+  searchArray = sortedRandomArray(16);
+  $("search-log").innerHTML = "";
+  drawCells();
+}
+
+$("new-array").addEventListener("click", () => !searching && newSearchArray());
+
+$("search-btn").addEventListener("click", async () => {
+  const raw = $("target").value.trim();
+  if (raw === "" || searching) return;
+  const target = Number(raw);
+  searching = true;
+  $("search-log").innerHTML = "";
+
+  const gen = binarySearch(searchArray, target);
+  let result = gen.next();
+  let stepNo = 0;
+  while (!result.done) {
+    const s = result.value;
+    stepNo++;
+    drawCells(s);
+    const verdict = s.found ? "found it!" : searchArray[s.mid] < target ? "too small → go right" : "too big → go left";
+    $("search-log").innerHTML += `<li>low=${s.low}, high=${s.high}, mid=${s.mid} → arr[mid]=${searchArray[s.mid]}, ${verdict}</li>`;
+    await sleep(900);
+    result = gen.next();
+  }
+
+  const index = result.value;
+  drawCells(null, index);
+  $("search-log").innerHTML += index === -1
+    ? `<li><b>${target} is not in the array</b> (${stepNo} steps)</li>`
+    : `<li><b>${target} is at index ${index}</b> (${stepNo} steps vs up to ${searchArray.length} for linear search)</li>`;
+  searching = false;
+});
+
+$("target").addEventListener("keydown", (e) => e.key === "Enter" && $("search-btn").click());
+
+newSearchArray();
