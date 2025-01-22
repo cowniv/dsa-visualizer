@@ -142,3 +142,75 @@ $("algo").addEventListener("change", () => $("shuffle").click());
 newArray();
 
 // ================= stack & queue =================
+const stack = new Stack(8);
+const queue = new Queue(10);
+
+function drawItems(container, items, highlightIndex = -1) {
+  container.innerHTML = items
+    .map((v, i) => `<div class="item ${i === highlightIndex ? "highlight" : ""}">${v}</div>`)
+    .join("");
+}
+
+// animate the leaving element first, then redraw
+async function removeWithAnimation(container, childIndex) {
+  const el = container.children[childIndex];
+  if (el) {
+    el.classList.add("leaving");
+    await sleep(250);
+  }
+}
+
+function readInput(input) {
+  const value = input.value.trim();
+  if (value === "") return null;
+  input.value = "";
+  input.focus();
+  return Number(value);
+}
+
+function attempt(msgEl, action) {
+  try {
+    msgEl.textContent = action();
+  } catch (err) {
+    msgEl.textContent = err.message;
+  }
+}
+
+$("push").addEventListener("click", () => {
+  const v = readInput($("stack-input"));
+  if (v === null) return ($("stack-msg").textContent = "Type a value first.");
+  attempt($("stack-msg"), () => {
+    stack.push(v);
+    drawItems($("stack"), stack.items);
+    return `push(${v}) — top is now ${v}`;
+  });
+});
+
+$("pop").addEventListener("click", async () => {
+  if (stack.isEmpty()) return attempt($("stack-msg"), () => stack.pop());
+  await removeWithAnimation($("stack"), stack.items.length - 1);
+  const v = stack.pop();
+  drawItems($("stack"), stack.items);
+  $("stack-msg").textContent = `pop() returned ${v}`;
+});
+
+$("peek").addEventListener("click", () => {
+  attempt($("stack-msg"), () => {
+    const v = stack.peek();
+    drawItems($("stack"), stack.items, stack.items.length - 1);
+    return `peek() → ${v}`;
+  });
+});
+
+$("enqueue").addEventListener("click", () => {
+  const v = readInput($("queue-input"));
+  if (v === null) return ($("queue-msg").textContent = "Type a value first.");
+  attempt($("queue-msg"), () => {
+    queue.enqueue(v);
+    drawItems($("queue"), queue.items);
+    return `enqueue(${v}) — added to the rear`;
+  });
+});
+
+$("dequeue").addEventListener("click", async () => {
+  if (queue.isEmpty()) return attempt($("queue-msg"), () => queue.dequeue());
