@@ -13,3 +13,10 @@ test("binary search returns a matching index", () => {
   const values = [2, 5, 8, 13, 21, 34];
 
   assert.equal(finish(binarySearch(values, 13)), 3);
+  assert.equal(finish(binarySearch(values, 7)), -1);
+});
+
+test("random search data is sorted and unique", () => {
+  const values = sortedRandomArray(12, 30);
+
+  assert.equal(values.length, 12);
