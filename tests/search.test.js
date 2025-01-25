@@ -20,3 +20,10 @@ test("random search data is sorted and unique", () => {
   const values = sortedRandomArray(12, 30);
 
   assert.equal(values.length, 12);
+  assert.equal(new Set(values).size, 12);
+  assert.deepEqual(values, [...values].sort((a, b) => a - b));
+});
+
+test("random data rejects impossible ranges", () => {
+  assert.throws(() => sortedRandomArray(6, 5), /cannot exceed/i);
+});
