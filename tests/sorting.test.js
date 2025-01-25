@@ -8,3 +8,7 @@ for (const [name, algorithm] of Object.entries(ALGORITHMS)) {
     const values = [8, 3, 5, 1, 9, 2, 3];
 
     [...algorithm.fn(values)];
+
+    assert.deepEqual(values, [1, 2, 3, 3, 5, 8, 9]);
+  });
+}
