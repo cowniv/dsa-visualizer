@@ -7,3 +7,12 @@ test("stack follows last-in, first-out order", () => {
   const stack = new Stack(2);
   stack.push("first");
   stack.push("second");
+
+  assert.equal(stack.peek(), "second");
+  assert.equal(stack.pop(), "second");
+  assert.equal(stack.pop(), "first");
+  assert.throws(() => stack.pop(), /underflow/i);
+});
+
+test("queue follows first-in, first-out order", () => {
+  const queue = new Queue(2);
