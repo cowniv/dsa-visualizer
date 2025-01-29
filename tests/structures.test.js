@@ -16,3 +16,12 @@ test("stack follows last-in, first-out order", () => {
 
 test("queue follows first-in, first-out order", () => {
   const queue = new Queue(2);
+  queue.enqueue("first");
+  queue.enqueue("second");
+
+  assert.equal(queue.front(), "first");
+  assert.equal(queue.dequeue(), "first");
+  assert.equal(queue.dequeue(), "second");
+  assert.throws(() => queue.dequeue(), /empty/i);
+});
+
