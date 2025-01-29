@@ -25,3 +25,12 @@ test("queue follows first-in, first-out order", () => {
   assert.throws(() => queue.dequeue(), /empty/i);
 });
 
+test("bounded structures reject overflow", () => {
+  const stack = new Stack(1);
+  const queue = new Queue(1);
+  stack.push(1);
+  queue.enqueue(1);
+
+  assert.throws(() => stack.push(2), /overflow/i);
+  assert.throws(() => queue.enqueue(2), /full/i);
+});
