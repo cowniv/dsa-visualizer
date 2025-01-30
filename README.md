@@ -15,3 +15,11 @@ This is a separate solo follow-up to the January 2025 group project. I wanted to
 ### Run
 ES modules don't load from `file://`, so serve the folder:
 ```bash
+npx serve .
+```
+or open `index.html` with VS Code Live Server.
+
+Run the algorithm and data-structure tests with:
+
+```bash
+npm test
