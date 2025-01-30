@@ -23,3 +23,11 @@ Run the algorithm and data-structure tests with:
 
 ```bash
 npm test
+```
+
+### What I practiced
+- Generator functions (`function*`, `yield`, `yield*` for the recursive sorts)
+- `async`/`await` with a `sleep` promise to pause between steps
+- ES modules (`import` / `export`) to split the code into files
+- Classes for `Stack` and `Queue`, throwing errors on invalid operations
+- Big-O of the common sorts, and why binary search needs a sorted array
