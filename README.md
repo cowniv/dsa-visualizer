@@ -7,3 +7,11 @@ This is a separate solo follow-up to the January 2025 group project. I wanted to
 ### Features
 - Sorting: bubble, selection, insertion, merge and quick sort
 - Play / pause, single step, speed and array size sliders
+- Live counters for steps, comparisons and swaps/writes, plus each algorithm's time complexity
+- Colors for comparing, swapping, pivot and sorted bars
+- Stack (push, pop, peek) and queue (enqueue, dequeue, front) with overflow/underflow messages
+- Binary search on a sorted array, showing low / mid / high on every step
+
+### Run
+ES modules don't load from `file://`, so serve the folder:
+```bash
